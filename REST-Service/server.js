@@ -3,6 +3,8 @@ const app = express();
 const axios = require("axios");
 const PORT = 3000;
 app.use(express.json());
+require("dotenv").config();
+const token = process.env.GitHub_Token;
 
 // routes
 app.get("/:name", (req, res) => {
@@ -19,7 +21,7 @@ function getRepositoryNames(username) {
   return axios
     .get(`https://api.github.com/users/${username}/repos`, {
       headers: {
-        Authorization: "token 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",
+        Authorization: `token ${token}`,
       },
     })
     .then((response) => {
@@ -45,7 +47,7 @@ async function getRepositoryLanguages(owner, repos) {
       `https://api.github.com/repos/${owner}/${repoName}/languages`,
       {
         headers: {
-          Authorization: "token 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",
+          Authorization: `token ${token}`,
         },
       }
     );
