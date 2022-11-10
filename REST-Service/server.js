@@ -57,11 +57,28 @@ async function getRepositoryLanguages(owner, repos) {
       languages: response.data,
     });
   }
-  languageStats.push({
-    publicRepositories: repos,
-  });
+  const res = languageStats.reduce(
+    (a, b) => {
+      a.repositories.push(b.repoName);
+      for (const lang of Object.keys(b.languages)) {
+        if (a.languages.hasOwnProperty(lang)) {
+          a.languages[lang] += b.languages[lang];
+        } else {
+          a.languages[lang] = b.languages[lang];
+        }
+      }
+      return a;
+    },
+    { languages: {}, repositories: [] }
+  );
 
-  return languageStats;
+  const totBytes = Object.values(res.languages).reduce((a, b) => a + b);
+
+  for (const lang of Object.keys(res.languages)) {
+    res.languages[lang] = res.languages[lang] / totBytes;
+  }
+
+  return res;
 }
 app.listen(PORT, () => {
   console.log(`API server listening at http://localhost:${PORT}`);
