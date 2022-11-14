@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const axios = require("axios");
 const PORT = 3000;
+var cors = require("cors");
+app.use(cors());
 app.use(express.json());
 require("dotenv").config();
 const token = process.env.GitHub_Token;
@@ -15,6 +17,10 @@ app.get("/:name", (req, res) => {
       }
     );
   });
+});
+app.get("/:name", (req, res) => {
+  console.log("Hello World");
+  res.send("Hello world");
 });
 
 function getRepositoryNames(username) {
