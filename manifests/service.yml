@@ -6,7 +6,6 @@ spec:
   type: LoadBalancer
   ports:
     - targerPort: 3000
-        name: port3000
         port: 3000
         protocl: TCP
   selector:
