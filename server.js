@@ -23,8 +23,8 @@ app.get("/test/test", (req, res) => {
   res.send("Hello world");
 });
 
-function getRepositoryNames(username) {
-  return axios
+async function getRepositoryNames(username) {
+  return await axios
     .get(`https://api.github.com/users/${username}/repos`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -46,7 +46,7 @@ function getRepositoryNames(username) {
 async function getRepositoryLanguages(owner, repos) {
   let languageStats = [];
   if (repos.length == 0) {
-    return "No such user";
+    return "No user with such username";
   } else {
     for (let index = 0; index < repos.length; index++) {
       const repoName = repos[index];
