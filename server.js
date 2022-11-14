@@ -27,7 +27,8 @@ function getRepositoryNames(username) {
   return axios
     .get(`https://api.github.com/users/${username}/repos`, {
       headers: {
-        Authorization: `token ${token}`,
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
     })
     .then((response) => {
@@ -53,7 +54,8 @@ async function getRepositoryLanguages(owner, repos) {
       `https://api.github.com/repos/${owner}/${repoName}/languages`,
       {
         headers: {
-          Authorization: `token ${token}`,
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
       }
     );
