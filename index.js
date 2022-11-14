@@ -35,7 +35,7 @@ async function getRepositoryNames(username) {
         .map((e) => e.name);
     })
     .catch((error) => {
-      return [];
+      return Promise.reject(error);
     });
 }
 
