@@ -36,7 +36,7 @@ on:
 
 env:
   AZURE_CONTAINER_REGISTRY: "mbidzinsk"
-  CONTAINER_NAME: "githublangstats"
+  CONTAINER_NAME: "rest-api"
   RESOURCE_GROUP: "GitHub-language-statistic"
   CLUSTER_NAME: "github-lang-stats"
   DEPLOYMENT_MANIFEST_PATH: "/manifest"
