@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: githublangstats 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: githublangstats
+  template:
+    metadata:
+      labels:
+        app: githublangstats 
+    spec:
+      containers:
+        - name: githublangstats 
+          image: mbidzinsk.azurecr.io/githublangstats
+          ports:
+          - containerPort: 3000
