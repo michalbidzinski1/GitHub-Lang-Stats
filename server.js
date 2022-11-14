@@ -39,54 +39,57 @@ function getRepositoryNames(username) {
         .map((e) => e.name);
     })
     .catch((error) => {
-      console.log(error);
-      return Promise.reject(error);
+      return [];
     });
 }
 
 async function getRepositoryLanguages(owner, repos) {
   let languageStats = [];
+  if (repos.length == 0) {
+    return "No such user";
+  } else {
+    for (let index = 0; index < repos.length; index++) {
+      const repoName = repos[index];
 
-  for (let index = 0; index < repos.length; index++) {
-    const repoName = repos[index];
+      const response = await axios.get(
+        `https://api.github.com/repos/${owner}/${repoName}/languages`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-    const response = await axios.get(
-      `https://api.github.com/repos/${owner}/${repoName}/languages`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
+      languageStats.push({
+        repoName: repoName,
+        languages: response.data,
+      });
+    }
+    const res = languageStats.reduce(
+      (a, b) => {
+        a.repositories.push(b.repoName);
+        for (const lang of Object.keys(b.languages)) {
+          if (a.languages.hasOwnProperty(lang)) {
+            a.languages[lang] += b.languages[lang];
+          } else {
+            a.languages[lang] = b.languages[lang];
+          }
+        }
+        return a;
+      },
+      { languages: {}, repositories: [] }
     );
 
-    languageStats.push({
-      repoName: repoName,
-      languages: response.data,
-    });
+    const totBytes = Object.values(res.languages).reduce((a, b) => a + b);
+
+    for (const lang of Object.keys(res.languages)) {
+      res.languages[lang] =
+        ((res.languages[lang] / totBytes) * 100).toFixed(1) + "%";
+    }
+
+    return res;
   }
-  const res = languageStats.reduce(
-    (a, b) => {
-      a.repositories.push(b.repoName);
-      for (const lang of Object.keys(b.languages)) {
-        if (a.languages.hasOwnProperty(lang)) {
-          a.languages[lang] += b.languages[lang];
-        } else {
-          a.languages[lang] = b.languages[lang];
-        }
-      }
-      return a;
-    },
-    { languages: {}, repositories: [] }
-  );
-
-  const totBytes = Object.values(res.languages).reduce((a, b) => a + b);
-
-  for (const lang of Object.keys(res.languages)) {
-    res.languages[lang] = res.languages[lang] / totBytes;
-  }
-
-  return res;
 }
 app.listen(PORT, () => {
   console.log(`API server listening at http://localhost:${PORT}`);
