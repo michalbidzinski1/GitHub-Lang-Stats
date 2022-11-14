@@ -1,19 +1,19 @@
 apiVersion : apps/v1
 kind: Deployment
 metadata:
-  name: githublangstats 
+  name: rest-api 
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: githublangstats
+      app: rest-api
   template:
     metadata:
       labels:
-        app: githublangstats 
+        app: rest-api 
     spec:
       containers:
-        - name: githublangstats 
-          image: mbidzinsk.azurecr.io/githublangstats
+        - name: rest-api 
+          image: mbidzinsk.azurecr.io/rest-api
           ports:
           - containerPort: 3000
