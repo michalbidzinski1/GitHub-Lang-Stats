@@ -1,7 +1,7 @@
-apiVersion : apps/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rest-api 
+  name: rest-api
 spec:
   replicas: 1
   selector:
@@ -10,10 +10,10 @@ spec:
   template:
     metadata:
       labels:
-        app: rest-api 
+        app: rest-api
     spec:
       containers:
-        - name: rest-api 
+        - name: rest-api
           image: mbidzinsk.azurecr.io/rest-api
           ports:
-          - containerPort: 3000
+            - containerPort: 3000
