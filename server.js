@@ -18,7 +18,7 @@ app.get("/:name", (req, res) => {
     );
   });
 });
-app.get("/", (req, res) => {
+app.get("/test/test", (req, res) => {
   console.log("Hello World");
   res.send("Hello world");
 });
