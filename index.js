@@ -42,7 +42,7 @@ async function getRepositoryNames(username) {
 async function getRepositoryLanguages(owner, repos) {
   let languageStats = [];
   if (repos.length == 0) {
-    return "No user with such username";
+    return "There is no user with such name!";
   } else {
     for (let index = 0; index < repos.length; index++) {
       const repoName = repos[index];
@@ -62,6 +62,7 @@ async function getRepositoryLanguages(owner, repos) {
         languages: response.data,
       });
     }
+
     const res = languageStats.reduce(
       (a, b) => {
         a.repositories.push(b.repoName);
@@ -77,14 +78,18 @@ async function getRepositoryLanguages(owner, repos) {
       { languages: {}, repositories: [] }
     );
 
-    const totBytes = Object.values(res.languages).reduce((a, b) => a + b);
+    if (Object.keys(res.languages) == 0) {
+      return "This user has empty repositories!";
+    } else {
+      const totBytes = Object.values(res.languages).reduce((a, b) => a + b);
 
-    for (const lang of Object.keys(res.languages)) {
-      res.languages[lang] =
-        ((res.languages[lang] / totBytes) * 100).toFixed(1) + "%";
+      for (const lang of Object.keys(res.languages)) {
+        res.languages[lang] =
+          ((res.languages[lang] / totBytes) * 100).toFixed(1) + "%";
+      }
+
+      return res;
     }
-
-    return res;
   }
 }
 app.listen(PORT, () => {
