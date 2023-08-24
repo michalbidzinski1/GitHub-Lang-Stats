@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checks out the repository this file is in
-      - uses: actions/checkout@v3m
+      - uses: actions/checkout@v3
 
       # Logs in with  Azure credentials
       - name: Azure login
@@ -64,11 +64,11 @@ jobs:
         uses: Azure/docker-login@v1
         with:
           # Container registry username
-          username: mbidzinsk
+          username: ${{ env.AZURE_CONTAINER_REGISTRY }}
           # Container registry password
           password: ${{ secrets.ACR_PASSWORD }}
           # Container registry server url
-          login-server: mbidzinsk.azurecr.io
+          login-server: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io
       # Deploys application based on given manifest file
       - name: Deploys application
         uses: Azure/k8s-deploy@v4
